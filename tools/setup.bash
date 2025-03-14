@@ -8,7 +8,7 @@ source .venv/bin/activate
 echo -e "\e[32m<|\e[m TASK COMPLETE"
 
 echo -e "\e[32m|>\e[m TASK: Run updates"
-./update.bash
+./tools/update.bash
 echo -e "\e[32m<|\e[m TASK COMPLETE"
 
 

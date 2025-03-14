@@ -14,6 +14,6 @@ while true;do
 
 	# Ensure all things are up-to-date
 	sleep "$resting_time"
-	./update.bash
+	./tools/update.bash
 	sleep "$resting_time"
 done
