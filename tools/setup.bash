@@ -16,5 +16,5 @@ echo -e "\e[32m|>\e[m TASK: Create links"
 echo -e "\e[32m :\e[m Linking new file \e[35mapp\e[m to \e[35mapp.py\e[m ..."
 ln -s app.py app
 echo -e "\e[32m :\e[m Linking new file \e[35m/home/protected/run-site.bash\e[m to \e[35mrun.bash\e[m ..."
-ln -s run.bash /home/protected/run-site.bash
+ln -s ./tools/run.bash /home/protected/run-site.bash
 echo -e "\e[32m<|\e[m TASK COMPLETE"
