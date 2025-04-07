@@ -7,12 +7,14 @@ from logging import log, INFO, WARN, ERROR, CRITICAL, DEBUG # pylint: disable=un
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 # System manipulation
-import os
-import shutil
-import sys
-from sys import exit # pylint: disable=redefined-builtin
-import time as t
-import random as r
+from os import remove as os_remove
+from subprocess import CompletedProcess, run as run_process # like os.system()
+from shutil import rmtree
+
+# Values
+from sys import argv as sys_argv, exit # pylint: disable=redefined-builtin
+from time import strftime
+from random import randint
 
 # 1. Compile the site and get a build number
 try:
@@ -23,9 +25,9 @@ except (ModuleNotFoundError, ImportError):
 # YY-MM-DD_hh.mm.ss_RAND
 # Where RAND is a random 4-digit hex integer
 build_id = {
-    'date': t.strftime('%Y-%m-%d'),
-    'time': t.strftime('%H.%M.%S'),
-    'rand': hex(r.randint(0, 0xFFFF))[2:].zfill(4).upper()
+    'date': strftime('%Y-%m-%d'),
+    'time': strftime('%H.%M.%S'),
+    'rand': hex(randint(0, 0xFFFF))[2:].zfill(4).upper()
 }
 build_no = f"{build_id['date']}_{build_id['time']}_{build_id['rand']}"
 log(INFO, f"Build#: {build_no}")
@@ -43,9 +45,9 @@ log(INFO, "Build complete!")
 # 2. Ask weather to commit
 # 2.1. If not, exit early
 
-if '--with-commit' in sys.argv:
+if '--with-commit' in sys_argv:
     log(INFO, "Committing via CLI argument")
-elif '--no-commit' in sys.argv:
+elif '--no-commit' in sys_argv:
     log(INFO, "Not committing via CLI argument")
     exit(0)
 else:
@@ -68,19 +70,20 @@ else:
 
 # 3. Switch to version branch and commit to the build number file
 
-def command(cmd: str|list) -> None:
+
+def command(cmd: list) -> None:
     """
-    Execute a command using the os.system function and log the command before execution.
+    Execute a command using the subprocess.run function and log the command before execution.
 
     Parameters:
-    command (str | list): The command to be executed. If a list is provided, it will be joined into
-        a single string using spaces.
+    command (list): The command to execute.
 
     Returns:
     None: The function does not return any value.
     """
     log(INFO, f"\t{cmd}")
-    os.system(cmd)
+    result: CompletedProcess = run_process(cmd, check=True)
+    log(INFO, f"Command completed with exit code {result.returncode}")
 
 log(INFO, "Switching to version branch...")
 command(['git', 'checkout', '-b', 'version'])
@@ -103,9 +106,9 @@ log(INFO, "Committing build# and output directory")
 command(["git", "commit", "-m", f"Build #{build_no}"])
 # 6. Push version and output branches to github
 
-if '--with-push' in sys.argv:
+if '--with-push' in sys_argv:
     log(INFO, "Pushing via CLI argument")
-elif '--no-push' in sys.argv:
+elif '--no-push' in sys_argv:
     log(INFO, "Not pushing via CLI argument")
     exit(0)
 else:
@@ -141,8 +144,8 @@ command(['git', 'checkout','main'])
 log(INFO, "Cleaning up.....")
 
 log(INFO, "Deleting output directory...")
-shutil.rmtree('output')
+rmtree('output')
 log(INFO, "Deleting build# file...")
-os.remove('BUILD')
+os_remove('BUILD')
 
 log(INFO, "Cleanup complete!")
