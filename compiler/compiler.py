@@ -11,6 +11,9 @@ described in the markdown_ext.py file.
 The files may contain yaml frontmatter, which will be scanned for additional attributes, such as
 templates to be used, additional scripts, and page-specific CSS.
 
+The argument --test-mode will compile links to the project level, rather than the output directory
+level.
+
 When imported as a module, this file will have the same composure and attitude as if it were run
 as a script, however it will not run immediately. To compile the site, call the main function.
 After main is called, the site will compile as described above.
@@ -34,8 +37,7 @@ import shutil
 # Compilation tools
 import html
 import markdown
-
-TEST_MODE = False
+from sys import argv as sys_argv
 
 try:
     from compiler.markdown_ext import extensions as custom_extensions
@@ -47,7 +49,7 @@ except (ModuleNotFoundError, ImportError):
         log(WARN, "Custom markdown extensions were not loaded...")
         custom_extensions = []
 
-def main() -> None:
+def main(test_mode: bool, dryrun: bool=False) -> None:
     """
     The main function orchestrates the entire site compilation process.
 
@@ -68,10 +70,16 @@ def main() -> None:
     Returns:
     None
     """
-    # Clear /output
-    shutil.rmtree('output', ignore_errors=True)
-    # Make /output
-    os.mkdir('output')
+    if dryrun:
+        log(INFO, 'would recursively delete ./output/')
+    else:
+        # Clear /output
+        shutil.rmtree('output', ignore_errors=True)
+    if dryrun:
+        log(INFO, 'would mkdir ./output/')
+    else:
+        # Make /output
+        os.mkdir('output')
     log(INFO, 'Emptied and replaced output directory')
 
     # Iterate over all files in content
@@ -82,23 +90,29 @@ def main() -> None:
         for filename in files:
             root_f = os.path.join(root, filename)
             rel_f = os.path.join(rel_dir, filename)
-            if filename.endswith('.md'):
-                log(INFO, f'Compiling {rel_f}')
-                compile_doc(root_f, kind='md')
-                log(INFO, f'Compiled  {rel_f}')
-            elif filename.endswith('.htm') or filename.endswith('.html'):
-                log(INFO, f'Compiling {rel_f}')
-                compile_doc(root_f, kind='html')
-                log(INFO, f'Compiled  {rel_f}')
+            comptype = (
+                'md'   if filename.endswith('.md'  ) else (
+                'html' if filename.endswith('.html') else (
+                'html' if filename.endswith('.htm' ) else (
+                None
+            ))))
+            if comptype is None:
+                continue
+            log(INFO, f'Compiling {rel_f}')
+            compile_doc(root_f, kind=comptype, test_mode=test_mode, dryrun=dryrun)
+            log(INFO, f'Compiled  {rel_f}')
 
-    log(INFO, 'Compilation done. Copying static content...')
     # Copy static
-    shutil.copytree('static', os.path.join('output', 's'))
+    log(INFO, 'Compilation done. Copying static content...')
+    if dryrun:
+        log(INFO, 'Would recursively copy ./static/ to ./output/s/')
+    else:
+        shutil.copytree('static', os.path.join('output', 's'))
     log(INFO, 'Static content copied!')
     log(INFO, 'Site compiled successfully!!!')
 
 
-def compile_doc(filename, kind='md') -> None:
+def compile_doc(filename: str, kind: str, test_mode: bool, dryrun: bool) -> None:
     """
     Compiles a markdown or HTML document into HTML, applying a template and handling frontmatter.
 
@@ -110,10 +124,12 @@ def compile_doc(filename, kind='md') -> None:
 
     Parameters:
     filename (str): The path to the markdown or HTML file to be compiled.
-    kind (str): The type of document to be compiled. Default is 'md'.
+    kind (str): The type of document to be compiled.
         If 'md', the document is processed as markdown.
         If 'html', the document is treated as plain HTML.
         If neither, the document is processed as plain text, and html-escaped.
+    test_mode (bool): Weather to prepend /output/ to all internal links.
+        This allows tools like VSCode Live Server to operate on the project level.
 
     Returns:
     None
@@ -136,19 +152,30 @@ def compile_doc(filename, kind='md') -> None:
         output = parse_doc_contents(doc_contents)
     elif kind == 'html':
         output = doc_contents
+    elif kind == 'raw':
+        output = doc_contents
     else:
         output = html.escape(doc_contents)
 
-    output = apply_template(output)
+    if kind != 'raw':
+        output = apply_template(output)
+
     if 'title' in data.keys():
         output = output.replace("{{{TITLE}}}", data['title'])
-    if TEST_MODE:
+    if test_mode:
         output = output.replace("\"/", "\"/output/")
     direc = os.path.dirname(filename).replace('content','output')
     file = os.path.basename(filename).replace('md','html')
-    os.makedirs(direc, exist_ok=True)
-    with open(os.path.join(direc, file), 'w', encoding='utf-8') as f:
-        f.write(output)
+    if dryrun:
+        log(INFO, f'Would ensure directory {direc} exists')
+    else:
+        os.makedirs(direc, exist_ok=True)
+
+    if dryrun:
+        log(INFO, f'Would write {os.path.join(direc, filename)}')
+    else:
+        with open(os.path.join(direc, file), 'w', encoding='utf-8') as f:
+            f.write(output)
 
 def parse_frontmatter(frontmatter: re.Match, filename) -> dict:
     """
@@ -233,4 +260,6 @@ def apply_template(original: str) -> str:
 
 
 if __name__ == '__main__':
-    main()
+    main(
+        test_mode = '--test-mode' in sys_argv
+        )
