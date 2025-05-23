@@ -1,0 +1,200 @@
+html {
+    --fg: #8a8adf; /* Foreground */
+    --bg: #010916; /* Background */
+    --c0: #575757;
+    --c1: #be5450;
+    --c2: #9cc28b;
+    --c3: #f7f578;
+    --c4: #569ef1; --lv: #5e79ee;
+    --c5: #cb69d8;
+    --c6: #29b8a5;
+    --c7: #fbffd4;
+    --b0: #a7a7a7;
+    --b1: #3f1a25;
+    --b2: #274733;
+    --b3: #836f44;
+    --b4: #32627e;
+    --b5: #28114d;
+    --b6: #3f7e7e;
+    --b7: #77796d;
+    padding-left: 0;
+}
+
+.c0 { color: var(--c0); --line-color: var(--c0) !important; }
+.c1 { color: var(--c1); --line-color: var(--c1) !important; }
+.c2 { color: var(--c2); --line-color: var(--c2) !important; }
+.c3 { color: var(--c3); --line-color: var(--c3) !important; }
+.c4 { color: var(--c4); --line-color: var(--c4) !important; }
+.c5 { color: var(--c5); --line-color: var(--c5) !important; }
+.c6 { color: var(--c6); --line-color: var(--c6) !important; }
+.c7 { color: var(--c7); --line-color: var(--c7) !important; }
+.b0 { background-color: var(--b0); } .b1 { background-color: var(--b1); }
+.b2 { background-color: var(--b2); } .b3 { background-color: var(--b3); }
+.b4 { background-color: var(--b4); } .b5 { background-color: var(--b5); }
+.b6 { background-color: var(--b6); } .b7 { background-color: var(--b7); }
+
+* {
+    margin:0;
+    box-sizing: border-box;
+    padding: 0;
+}
+
+body {
+    padding-left: 0;
+    font-family: 'NerdFontsSymbols Nerd Font',monospace;
+    font-size: 16px;
+    color: var(--fg);
+    background-color: var(--bg);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+a {
+    color: var(--c4);
+    text-decoration:dotted var(--b4) underline;
+}
+a:hover {
+    font-style: italic;
+}
+
+h1 {
+    font-size: 2em;
+    font-weight: bold;
+    color: var(--c3);
+    --line-color: var(--c3);
+}
+h1::after{
+    /* horizontal line */
+    content: "";
+    display: block;
+    width: max(75%, 20ch);
+    max-width: 100%;
+    height: 2px;
+    background-color: var(--line-color);
+}
+
+h2 {
+    font-size: 2em;
+    font-weight: normal;
+    color: var(--c5);
+    --line-color: var(--c5);
+}
+h2::after{
+    /* horizontal line */
+    content: "";
+    display: block;
+    width: max(50%,15ch);
+    max-width: 100%;
+    height: 1px;
+    background-color: var(--line-color);
+}
+
+h3 {
+    font-size: 1.5em;
+    font-weight: bold;
+    color: var(--c6);
+    --line-color: var(--c6);
+}
+h3::after{
+    /* horizontal line */
+    content: "";
+    display: block;
+    width: max(40%,15ch);
+    max-width: 100%;
+    height: 1px;
+    background-color: var(--line-color);
+}
+
+h4 {
+    font-size: 1.5em;
+    font-weight: normal;
+    color: var(--c7);
+}
+
+h5 {
+    font-size: 1em;
+    color: var(--c4);
+    font-weight: bold;
+}
+
+h6 {
+    font-size: 1em;
+    font-weight: normal;
+}
+
+navbar {
+    background-color: var(--b5);
+    color: var(--c5);
+    width: 100vw;
+    height: max-content;
+    padding-top: 1em;
+    padding-bottom: 1em;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+navbar>* {
+    padding-right: 2ch;
+    padding-left: 1ch;
+}
+
+footer {
+    box-sizing: border-box;
+    background-color: var(--b5);
+    color: var(--c5);
+    width: 100vw;
+    height: max-content;
+    padding-top: 1em;
+    padding-bottom: 1em;
+    display: flex;
+    flex-direction: column;
+    /* flex-wrap: wrap; */
+    justify-content: flex-start;
+    /* align-items: left; */
+}
+
+.content {
+    flex-grow: 1;
+    padding-left: 1ch;
+    padding-right: 1ch;
+    padding-top: 1em;
+    padding-bottom: 5em;
+    overflow-wrap:break-word;
+}
+
+.content h1,
+.content h2,
+.content h3,
+.content h4,
+.content h5,
+.content h6,
+.content p {
+    margin-top: 1em;
+}
+
+.code-highlight {
+    padding-left: 4ch;
+    padding-top: 1em;
+}
+
+.code-highlight .nf {
+    font-style: inherit;
+    font-family: inherit;
+    font-weight: inherit;
+    font-variant: inherit;
+    text-transform: inherit;
+    line-height: inherit;
+}
+
+mjx-container,
+mjx-container>*>*{
+    color: var(--c1);
+    text-align: left !important;
+}
+
+.highlight {
+    background-color: var(--b3);
+}
