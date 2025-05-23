@@ -94,8 +94,9 @@ def main(test_mode: bool, dryrun: bool=False) -> None:
                 'md'   if filename.endswith('.md'  ) else (
                 'html' if filename.endswith('.html') else (
                 'html' if filename.endswith('.htm' ) else (
+                'raw' if filename.endswith('.txt' ) else (
                 None
-            ))))
+            )))))
             if comptype is None:
                 continue
             log(INFO, f'Compiling {rel_f}')
