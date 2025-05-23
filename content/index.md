@@ -1,8 +1,9 @@
+---
+title: home
+---
 
 # Website of ducksel
 
-Some day this site will be constructed.
+Welcome to my website!
 
-Till then, have fun!
-
-.
+It's still under construction, but feel free to browse my old site at [old.ducksel.xyz](https://old.ducksel.xyz).
