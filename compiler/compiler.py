@@ -24,6 +24,7 @@ After main is called, the site will compile as described above.
 # Logging to console
 import logging
 from logging import log, INFO, WARN, ERROR, CRITICAL, DEBUG # pylint: disable=unused-import
+# cspell: ignore levelname
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 # Text management tools
@@ -85,22 +86,22 @@ def main(test_mode: bool, dryrun: bool=False) -> None:
     # Iterate over all files in content
     log(INFO, 'Iterating to compile....')
     for root, dirs, files in os.walk('content'): # pylint: disable=unused-variable
-        rtparts = os.path.normpath(root).split(os.sep)
-        rel_dir = os.path.join(*rtparts[1:]) if len(rtparts) > 1 else ''
+        root_parts = os.path.normpath(root).split(os.sep)
+        rel_dir = os.path.join(*root_parts[1:]) if len(root_parts) > 1 else ''
         for filename in files:
             root_f = os.path.join(root, filename)
             rel_f = os.path.join(rel_dir, filename)
-            comptype = (
+            compile_type = (
                 'md'   if filename.endswith('.md'  ) else (
                 'html' if filename.endswith('.html') else (
                 'html' if filename.endswith('.htm' ) else (
                 'raw' if filename.endswith('.txt' ) else (
                 None
             )))))
-            if comptype is None:
+            if compile_type is None:
                 continue
             log(INFO, f'Compiling {rel_f}')
-            compile_doc(root_f, kind=comptype, test_mode=test_mode, dryrun=dryrun)
+            compile_doc(root_f, kind=compile_type, test_mode=test_mode, dryrun=dryrun)
             log(INFO, f'Compiled  {rel_f}')
 
     # Copy static
@@ -165,17 +166,17 @@ def compile_doc(filename: str, kind: str, test_mode: bool, dryrun: bool) -> None
         output = output.replace("{{{TITLE}}}", data['title'])
     if test_mode:
         output = output.replace("\"/", "\"/output/")
-    direc = os.path.dirname(filename).replace('content','output')
+    new_directory = os.path.dirname(filename).replace('content','output')
     file = os.path.basename(filename).replace('md','html')
     if dryrun:
-        log(INFO, f'Would ensure directory {direc} exists')
+        log(INFO, f'Would ensure directory {new_directory} exists')
     else:
-        os.makedirs(direc, exist_ok=True)
+        os.makedirs(new_directory, exist_ok=True)
 
     if dryrun:
-        log(INFO, f'Would write {os.path.join(direc, filename)}')
+        log(INFO, f'Would write {os.path.join(new_directory, filename)}')
     else:
-        with open(os.path.join(direc, file), 'w', encoding='utf-8') as f:
+        with open(os.path.join(new_directory, file), 'w', encoding='utf-8') as f:
             f.write(output)
 
 def parse_frontmatter(frontmatter: re.Match, filename) -> dict:
@@ -192,7 +193,7 @@ def parse_frontmatter(frontmatter: re.Match, filename) -> dict:
         The frontmatter should be enclosed within triple dashes (---) at the beginning
         and end of the document.
     filename (str): The name of the markdown file being processed. This parameter is used in the
-        warning messageif the YAML frontmatter is invalid.
+        warning message if the YAML frontmatter is invalid.
 
     Returns:
     dict: A dictionary containing the parsed YAML frontmatter. If the YAML frontmatter is invalid,
@@ -211,7 +212,7 @@ def parse_doc_contents(markdown_text: str) -> str:
     Processes the given markdown text and converts it into HTML.
 
     This function uses the Python-Markdown library to parse the markdown text.
-    It applies the 'fenced_code', 'codehilte', and all custom extensions specified
+    It applies the 'fenced_code', 'codehilite', and all custom extensions specified
         in the 'custom_extensions' list.
     The 'codehilite' extension is configured to not guess the language and to use
         the 'code-highlight' CSS class.
@@ -223,7 +224,7 @@ def parse_doc_contents(markdown_text: str) -> str:
     str: The resulting HTML after processing the markdown text.
     """
     # Process the markdown
-    # Use fenced code, codehilte, and all custom extensions
+    # Use fenced code, codehilite, and all custom extensions
     exts = ['fenced_code', 'codehilite']
     exts.extend(custom_extensions)
     result = markdown.markdown(

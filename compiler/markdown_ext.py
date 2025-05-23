@@ -1,9 +1,11 @@
+# cspell: ignore Xcolored
+
 """
 NAME: markdown_ext.py
 
 A module that implements a few custom markdown extensions. The extensions are
 put into three parts: The first is a pattern class, "{extension}Pattern", which
-is used internally. The second is a markdown extensino class,
+is used internally. The second is a markdown extension class,
 "{extension}Extension", which can be instantiated and passed to
 markdown.markdown()'s extensions key word argument. The third is an instance of
 the extension class, which is placed into the extensions list.
@@ -35,14 +37,16 @@ should be enough!
 
 # pylint: disable=wrong-import-order
 
+# cspell: ignore inlinepatterns
 import xml.etree.ElementTree as etree
-import markdown
 from markdown.extensions import Extension
 from markdown.inlinepatterns import Pattern
 
 # Logging to console
 import logging
 from logging import log, INFO, WARN, ERROR, CRITICAL, DEBUG # pylint: disable=unused-import
+
+# cspell: ignore: levelname
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 
@@ -81,12 +85,13 @@ class ColorSpanExtension(Extension):
     where S is a number 0-7.
     """
     def extendMarkdown(self, md):
+        # cspell: ignore colorspan
         md.inlinePatterns.register(
             ColorSpanPattern(r'%([0-9a-fA-F])(.*?)(%([0-9a-fA-F]?)%)', md),
             'colorspan', 175
             )
 
-class ColorSpanPattern(markdown.inlinepatterns.Pattern):
+class ColorSpanPattern(Pattern):
     """Return a span element representing the colored text."""
     def handleMatch(self, m):
         color1 = int(m.group(2),base=16)
@@ -94,9 +99,14 @@ class ColorSpanPattern(markdown.inlinepatterns.Pattern):
                 if m.group(5) == '' else
                 int(m.group(5),base=16))
         content = m.group(3)
-        log(DEBUG, f"Rendered colorblock {repr((color1,color2))}")
+        log(DEBUG, f"Rendered color block {repr((color1,color2))}")
         el = etree.Element('span')
         el.text = content
+        # Set the class attribute to the color class
+        # c0-c7 for foreground colors (indicated by 0-7)
+        # b0-b7 for background colors (indicated by 8-F)
+        # Subtracting 8 yields the background color
+        # the second color is only added if needed
         el.set('class',
             (f'c{color1}'
                 if color1 < 8 else
@@ -105,8 +115,8 @@ class ColorSpanPattern(markdown.inlinepatterns.Pattern):
                 f'c{color2}'
                 if color2 < 8 else
                 f'b{color2-8}')
-                if color2 >= 0 else ''
-            ))
+            ) if color2 >= 0 else ''
+            )
         return el
 
 extensions = [
