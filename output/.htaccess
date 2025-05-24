@@ -1,15 +1,6 @@
 RewriteEngine On
 
-# If request asks for file/, give file instead.
-RewriteCond %{REQUEST_FILENAME}/ -d
-RewriteRule ^(.+)/$ /$1
-
 # If there's no file, but file.html, use file.html 
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME}.html -f
-RewriteRule ^(.*)$ $1.html
-
-# If file is dir and file.html exists, use file.html
-RewriteCond %{REQUEST_FILENAME} -d
-RewriteCond %{REQUEST_FILENAME}.html -f
-RewriteRule ^(.*)$ $1.html
+RewriteRule ^(.*)$ $1.html [L]
