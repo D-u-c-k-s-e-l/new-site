@@ -5,7 +5,7 @@ RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME}.html -f
 RewriteRule ^(.*)$ $1.html [L]
 
-# If file is a dir, and file.html, use dir.html
+# If file is a dir, and file/_.html, use file/_.html
 RewriteCond %{REQUEST_FILENAME} -d
-RewriteCond %{REQUEST_FILENAME}/../%{REQUEST_FILENAME}.html -f
+RewriteCond %{REQUEST_FILENAME}/_.html -f
 RewriteRule ^(.+)/$ $1.html [L]
