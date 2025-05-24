@@ -114,9 +114,8 @@ class ColorSpanPattern(Pattern):
             (' '+(
                 f'c{color2}'
                 if color2 < 8 else
-                f'b{color2-8}')
-            ) if color2 >= 0 else ''
-            )
+                f'b{color2-8}') if color2 >= 0 else ''
+            ))
         return el
 
 extensions = [
