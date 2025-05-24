@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="/s/st/nerdfonts.css">
+    <link rel="stylesheet" href="/s/st/pygments.css">
+    <link rel="stylesheet" href="/s/st/main.css">
+    <link rel="icon" href="/s/img/duck.png" type="image/png">
+    <title>How I Set Up This Site | ducksel.xyz</title>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>
+        window.MathJax = {
+          tex: {
+            inlineMath: [['$', '$'], ['\\(', '\\)']],
+            displayMath: [['$$', '$$'], ['\\[', '\\]']]
+          },
+          svg: {
+            fontCache: 'global'
+          }
+        };
+    </script>
+</head>
+
+<body>
+    <p class="c2 b4">
+        The website of
+        <span class="c7">󰇥Ducksel󰇥</span>
+    </p>
+    <navbar>
+
+        <a href="/#">Home</a>
+        <a href="/blog#">Blog</a>
+
+        <span class="c2">&#x2502;</span>
+
+        <a class="c6" href="https://tumblr.com/helloiamduck/"     >Tumblr</a>
+        <a class="c2" href="https://github.com/D-u-c-k-s-e-l/"    >Github</a>
+        <a class="c5" href="https://reddit.com/u/ClerkEither6428/">Reddit</a>
+        <a class="c1" href="https://youtube.com/@ducksel_/"       >Youtube</a>
+    </navbar>
+
+    <p class="c0">~--</p>
+
+    <div class="content">
+        <h1>How I Set Up This Site</h1>
+<p>Blog article<br />
+2025-05-24</p>
+<h2>Info</h2>
+<p>I thought that I'd write a small blog thing (are they posts, articles, idk...) about how I set this site up. It was a fun challenge, and I thought it would be good to share.</p>
+<p>To start me down this path, I had already built a decent site with github's github.io system, but it wasn't really giving me all that I wanted, and the codebase was a bit of a mess. A github.io site feels like github owns, it rather than you.</p>
+<p>To solve the problem of not having my own site, I needed to first solve the easier problem: a domain.</p>
+<h2>A domain</h2>
+<p>To start out, I was thinking about what I should get for a domain. I'd heard of these unicode domains where you can put emojis and whatnot in the url. Unfortunately, after some research, I learned that the only people who will sell you those are random countries. (It's a security thing.) With my head down, I turned away from [duck emoji].dev, and started being realistic.</p>
+<p>My next options were all ducksel.something. Ducksel has been my name online for quite a while, and I thought I might as well name my personal site after myself.</p>
+<p>Once I had settled on this and done some digging, I found the cheapest place to buy domains: gen.xyz. Sure, .xyz looks childish and it's not a <em>real</em> domain provider like godaddy, but it worked great, and with only $10, I bought a domain for a year!</p>
+<p>Domain in hand, I now had a new problem: hosting</p>
+<h2>Hosting</h2>
+<p>Now where does one put a website, I wondered. I had many options. I could self-host, exposing my PII, and breaking the contract with my ISP. I could pay a cloud provider an atrocious amount of money. Or, I could go on some weird site that does very specific types of website like neocities or wordpress. For a while I was going to be paying $5/mo for someone to host my flask server, when I stumbled onto NearlyFreeSpeech.</p>
+<p>NearlyFreeSpeech offers hosting for a minimum price of ~$3.65/yr. That was so exciting that I abandoned any other searches and dove in head first. I signed up, created a site, put my domain with their servers, and installed some flask stuff. What came next was predictable.</p>
+<p>NFS, you see, is a very DIY sort of server provider, and if you go over their limits, they do charge. I had set up a Flask+Waitress server on their cheapest tier, and even the storage from the python .venv was costing me extra. Flask, too, is not a lightweight process, and the memory and CPU was <em>also</em> costing me a bit extra. I shut the site down, and went to ponder alternatives.</p>
+<p>After the Flask failure, I remembered what NFS had said in various places across their website; static sites are cheaper. Armed with that knowledge, but not knowing a thing about apache, I turned off their apache daemon and tried installing nginx.</p>
+<p>It turns out that it is very hard to compile nginx from scratch, and my friend and I, after an hour or two of trying, decided that it wasn't worth it. I was back to square zero.</p>
+<p>Now that I had failed in both Flask and nginx, I took a break, then conceded to apache's tyranny. I told NFS to put apache back, and decided to live with it.</p>
+<h2>Synchronization</h2>
+<p>At this point, it had been a month or two of having my hosting and domain. I had, by now, realized that</p>
+<ol>
+<li>this is a static site that I'm gonna be writing and </li>
+<li>whatever changes I make to the site need to be pulled through github, and onto the server</li>
+</ol>
+<p>I started by writing a python script to compile the site. I reasoned (correctly) that I'm going to want my own very simple templating engine, with really good markdown support, and I'm going to have fun making it. I also reasoned (incorrectly) that it would make sense to hold the content on one branch, and the compiled site on another branch.</p>
+<p>After a week('s worth) of work, I realized that I was incorrect, and that it should just use git's sparse feature.</p>
+<h3>Git's Sparse Feature</h3>
+<p>So, thanks to Torvalds, it turns out that there's a really convenient way to deal with the fact that sometimes you only need one directory. After deeply reading the git docs, I found this out. I don't have my sync script up on github yet, but if I put it there, I'll link it here.</p>
+<p>Anyway, you can pull down exclusively the <code>output/</code> folder (for example) of a repo by running,</p>
+<div class="code-highlight"><pre><span></span><code>git<span class="w"> </span>init
+<span class="c1"># &lt;-- you would `remote add origin` on this line</span>
+git<span class="w"> </span>config<span class="w"> </span>core.sparseCheckout<span class="w"> </span><span class="nb">true</span>
+</code></pre></div>
+
+<p>Then putting the line <code>output/</code> in the repo's <code>.git/info/sparse-checkout</code>, then doing your git pull.</p>
+<p>Why is this a thing? I don't know. Is it kinda cool? Yeah!</p>
+<p>So I used this thing I'd found in a script on my NFS private directory, while also telling it to store no history. What a free deal!</p>
+<p>I did use a bit of AI to help write the script, but mostly because it's better about not hardcoding everything. Now, every hour, whatever is on the github repo is pulled up onto the server!</p>
+<h2>Content</h2>
+<h3>Marking Down</h3>
+<p>Jumping back to before I discovered the cool git thing, I had begun working on my site.  I was thinking of all the things I had loved and hated about markdown over the years. I realized a few things.</p>
+<ol>
+<li>I like having the ability to put $\LaTeX$ into things</li>
+<li>That <span class="highlight">highlighted text</span> thing some note apps do is kinda cool</li>
+<li>I need syntax highlighting</li>
+<li>When I use markdown, I miss the <span class="c1">c</span><span class="c2">o</span><span class="c3">l</span><span class="c4">o</span><span class="c5">r</span><span class="c6">s</span> you can use in a terminal</li>
+<li>It should be easy to link to people's social media accounts</li>
+<li>Nerd fonts</li>
+</ol>
+<p>To solve #1, I just used MathJax. No use reinventing the wheel. The same with #6; just use Nerd Fonts if you want them.</p>
+<p>For #3, I used codehilite, because it just made sense if I'm already using python markdown.</p>
+<p>As for #2 #4 and #5, I got myself custom markdown extensions! Yes, AI helped a little, but overall, it's all my ideas, and mostly my code.</p>
+<h3>Marking Up</h3>
+<p>Meanwhile, I also needed a template to house my ideas. I decided make it by hand with HTML. The final design looks amazing, imo, and even looks good in Lynx. (nothing looks good in Lynx)</p>
+<p>I wanted the site to look and feel unique, so I pulled out a color picker, and picked out 18 or so colors by hand, to set the vibe. I later had to adjust the foreground color to fix some contrast issues, but that's what you get for hand-picking colors. I decided that I might as well write a blog article every so often, so I made a blog link.</p>
+<p>It turns out that the less you style a website, the more responsive it becomes (aside from mobile experience). This was to my advantage, as I wanted to make my website look good anywhere. (yes, even Lynx). Somehow, the little worms at top and bottom of the content made it in there. I don't know why or how, but I'm not mean enough to kick them out, so they're staying.</p>
+<p>Apparently, you "should" have a robots.txt file. I'm not sure what goes in there, so I just said "block all robots". Will this wreck my SEO? Absolutely! Do I care? No. Should I really not do that? Probably, but I honestly don't feel like researching it more. All I know is this will block some kind scrapers from stealing from me, and that seems like an okay thing.</p>
+<h3>htaccess</h3>
+<p>Something I learned on this journey was that apache has magic files called <code>.htaccess</code>. How do they work? Magic, I said.</p>
+<p>Apparently, to make the URL not have that ugly ".html" on it, you need to tell the htaccess file to pretend that the .html is there. Why? I don't know.</p>
+<p>Anyway, I added one of these.</p>
+<h2>What I Got</h2>
+<blockquote>
+<p><em>I've got rhythm</em><br />
+<em>I've got music</em><br />
+<em>I've got my gal</em><br />
+<em>Who could ask for anything more?</em><br />
+-- "I've got Rhythm", Crazy for You</p>
+</blockquote>
+<p>After this journey, I ended up with a pretty cool website that you're currently browsing. This website (aside from the nerd font icons, sorry Lynx) should work perfectly in any and all browsers, and that makes me pretty happy. I learned about creating and hosting websites, compilers, regex, markdown, and a CSS trick to make the footer snap to the bottom.</p>
+<p>I have not been sponsored by anybody mentioned here, this is all my opinion and my money.</p>
+    </div>
+
+    <p class="c0">--~</p>
+
+    <footer>
+        <p>Copyright 2025 by Ducksel. All Rights Reserved.</p>
+        <p>Icons via <a href="https://www.nerdfonts.com/">Nerd Fonts</a>.</p>
+    </footer>
+</body>
+
+</html>
