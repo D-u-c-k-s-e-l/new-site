@@ -1,5 +1,11 @@
 RewriteEngine On
 
+# If there's no file, but file.html, use file.html 
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME}.html -f
 RewriteRule ^(.*)$ $1.html [L]
+
+# If file is a dir, and file.html, use dir.html
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteCond %{REQUEST_FILENAME}/../%{REQUEST_FILENAME}.html -f
+RewriteRule ^(.+)/$ $1.html [L]
