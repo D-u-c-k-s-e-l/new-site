@@ -36,7 +36,7 @@ html {
 * {
     margin:0;
     box-sizing: border-box;
-    padding: 0;
+    /* padding: 0; */
 }
 
 body {
@@ -121,6 +121,10 @@ h5 {
 h6 {
     font-size: 1em;
     font-weight: normal;
+}
+
+blockquote {
+    padding-left: 4ch;
 }
 
 navbar {
