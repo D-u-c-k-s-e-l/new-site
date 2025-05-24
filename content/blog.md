@@ -4,6 +4,11 @@ title: blog
 
 # Ducksel's blog
 
-%1No blog posts/articles yet...%%
+What if I blogged sometimes. That might be cool...
 
-Come back later?
+## Articles
+
+- [How I Set Up This Site](/blog/how-i-set-up-this-site) (2025-05-24)
+
+
+(Yes, I have only written one article. No, I don't know if I'll write another)
