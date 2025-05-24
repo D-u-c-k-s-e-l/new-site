@@ -172,8 +172,9 @@ class SocialLinkExtension(Extension):
     """
     SOCIAL_REGEX = (
         r'(?P<platform>[a-zA-Z0-9]+)'+
-        r'(?P<username>[a-zA-Z0-9_.\-+]+)'+
-        r'(@(?P<mailbox>[a-zA-Z0-9\-._~:/?#\[\]@!$&\'()*+,;=%]+))?(?=[,.!? ]|$)'
+        r'@(?P<username>[a-zA-Z0-9_.\-+]+)'+
+        r'(@(?P<mailbox>[a-zA-Z0-9\-._~:/?#\[\]@!$&\'()*+,;=%]+))?'+
+        r'(?=[,.!? ]|$)'
         )
     def extendMarkdown(self, md):
         """
