@@ -123,6 +123,10 @@ h6 {
     font-weight: normal;
 }
 
+blockquote {
+    padding-left: 4ch;
+}
+
 navbar {
     background-color: var(--b5);
     color: var(--c5);
