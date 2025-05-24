@@ -29,7 +29,15 @@ Properties:
     >   yellow, blue, magenta, cyan, white.
     > - Hex digits 8-F: 3-bit background colors in the same order as the
     >   foreground colors.
-
+* SocialLink
+    > Converts the syntax platform@username into a link to the user on that 
+    > platform. If the platform needs an additional url, (for example, email
+    > has an additional url), you add that after a second @ sign.
+    > For example, email@name@example.com will become a mailto link to
+    > name@example.com. Likewise, twitter@user will link to @user's twitter
+    > page.
+    > Social platforms are configured in the SOCIAL_LINKS dictionary. Please
+    > edit it to your liking.
 The list 'extensions' is the best thing to import from this module, because it's
 got everything added. A simple 'from markdown_ext import extensions as mde'
 should be enough!
@@ -49,6 +57,46 @@ from logging import log, INFO, WARN, ERROR, CRITICAL, DEBUG # pylint: disable=un
 # cspell: ignore: levelname
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
+SOCIAL_LINKS = {
+    # Format:
+    # 'platform': {
+    #     'url': 'link to username on the platform',
+    #     'icon': 'nerd font unicode char', # nerd-font-icon-title
+    #     'display': 'text to display on the link'
+    # }
+    # OR
+    # 'platform': 'alias'
+    #
+    # the alias will refer to another platform.
+    # this is useful for twitter because some people call it X.
+    'github': {
+        'url': 'https://github.com/{username}',
+        'icon': '\uf09b', # nf-fa-github
+        'display': '@{username}'
+    },
+    'email': {
+        'url': 'mailto:{username}@{mailbox}',
+        'icon': '\uf0e0', # nf-fa-envelope
+        'display': '{username}@{mailbox}'
+    },
+    # Mastodon is an example:
+    # 'mastodon': {
+    #     'url': 'https://mastadon.social/@{username}@{mailbox}',
+    # cspell: ignore uedc (this is stupid)
+    #     'icon': '\uedc0', # nf-fa-mastodon
+    #     'display': '@{username}@{mailbox}'
+    # },
+    'tumblr': {
+        'url': 'https://tumblr.com/{username}',
+        'icon': '\uf173', # nf-fa-tumblr
+        'display': '@{username}'
+    },
+    'youtube': {
+        'url': 'https://youtube.com/@{username}',
+        'icon': '\uf16a', # nf-fa-youtube
+        'display': '{username}'
+    },
+}
 
 class HighlightPattern(Pattern):
     """Return a span element representing the highlighted text."""
@@ -118,8 +166,59 @@ class ColorSpanPattern(Pattern):
             ))
         return el
 
+class SocialLinkExtension(Extension):
+    """
+    Markdown extension where platform@username becomes a link saying platform@username
+    """
+    SOCIAL_REGEX = (
+        r'(?P<platform>[a-zA-Z0-9]+)'+
+        r'(?P<username>[a-zA-Z0-9_.\-+]+)'+
+        r'(@(?P<mailbox>[a-zA-Z0-9\-._~:/?#\[\]@!$&\'()*+,;=%]+))?(?=[,.!? ]|$)'
+        )
+    def extendMarkdown(self, md):
+        """
+        Register the pattern with the markdown instance.
+        """
+        social_pattern = SocialLinkPattern(self.SOCIAL_REGEX, md)
+        md.inlinePatterns.register(social_pattern, 'social', 160)
+
+class SocialLinkPattern(Pattern):
+    """ Return a link element representing the social link. """
+    def handleMatch(self, m):
+        platform = m.group('platform')
+        username = m.group('username')
+        mailbox = m.group('mailbox')
+        while True:
+            # Unalias platform.
+            if platform not in SOCIAL_LINKS:
+                log(WARN, f"Unknown platform {platform} in {m.group(0)}")
+                return None
+            if isinstance(SOCIAL_LINKS[platform], str):
+                # alias
+                platform = SOCIAL_LINKS[platform]
+                continue
+            break
+        # link
+        el = etree.Element('a')
+        el.set('class', f'social-link {platform}-link')
+        url = SOCIAL_LINKS[platform]['url']
+        url = url.format(username=username, mailbox=mailbox)
+        el.set('href', url)
+        # text
+        text = SOCIAL_LINKS[platform]['display']
+        text = text.format(username=username, mailbox=mailbox)
+        icon = SOCIAL_LINKS[platform]['icon']
+        el.text = icon + text
+        # Open in new tab
+        el.set('target', '_blank')
+        el.set('rel', 'noopener noreferrer')
+        # hover text
+        el.set('title', f"{text} via {platform}")
+        return el
+
 extensions = [
     HighlightExtension(),
     StrikethroughExtension(),
-    ColorSpanExtension()
+    ColorSpanExtension(),
+    SocialLinkExtension()
 ]
