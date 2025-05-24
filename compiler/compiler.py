@@ -96,8 +96,9 @@ def main(test_mode: bool, dryrun: bool=False) -> None:
                 'html' if filename.endswith('.html') else (
                 'html' if filename.endswith('.htm' ) else (
                 'raw' if filename.endswith('.txt' ) else (
+                'raw' if filename == '.htaccess' else (
                 None
-            )))))
+            ))))))
             if compile_type is None:
                 continue
             log(INFO, f'Compiling {rel_f}')
