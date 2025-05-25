@@ -22,16 +22,19 @@ To start out, I was thinking about what I should get for a domain. I'd heard of 
 
 My next options were all ducksel.something. Ducksel has been my name online for quite a while, and I thought I might as well name my personal site after myself.
 
-Once I had settled on this and done some digging, I found the cheapest place to buy domains: gen.xyz. Sure, .xyz looks childish and it's not a _real_ domain provider like godaddy, but it worked great, and with only $10, I bought a domain for a year!
+<!-- cspell: words godaddy -->
+Once I had settled on this and done some digging, I found the cheapest place to buy domains: gen.xyz. Sure, .xyz looks childish and it's not a *real* domain provider like godaddy, but it worked great, and with only $10, I bought a domain for a year!
 
 Domain in hand, I now had a new problem: hosting
 
 ## Hosting
 
+<!-- cspell: words neocities -->
 Now where does one put a website, I wondered. I had many options. I could self-host, exposing my PII, and breaking the contract with my ISP. I could pay a cloud provider an atrocious amount of money. Or, I could go on some weird site that does very specific types of website like neocities or wordpress. For a while I was going to be paying $5/mo for someone to host my flask server, when I stumbled onto NearlyFreeSpeech.
 
 NearlyFreeSpeech offers hosting for a minimum price of ~$3.65/yr. That was so exciting that I abandoned any other searches and dove in head first. I signed up, created a site, put my domain with their servers, and installed some flask stuff. What came next was predictable.
 
+<!-- cspell: words venv -->
 NFS, you see, is a very DIY sort of server provider, and if you go over their limits, they do charge. I had set up a Flask+Waitress server on their cheapest tier, and even the storage from the python .venv was costing me extra. Flask, too, is not a lightweight process, and the memory and CPU was *also* costing me a bit extra. I shut the site down, and went to ponder alternatives.
 
 After the Flask failure, I remembered what NFS had said in various places across their website; static sites are cheaper. Armed with that knowledge, but not knowing a thing about apache, I turned off their apache daemon and tried installing nginx.
@@ -44,7 +47,7 @@ Now that I had failed in both Flask and nginx, I took a break, then conceded to 
 
 At this point, it had been a month or two of having my hosting and domain. I had, by now, realized that
 
-1. this is a static site that I'm gonna be writing and 
+1. this is a static site that I'm gonna be writing and
 2. whatever changes I make to the site need to be pulled through github, and onto the server
 
 I started by writing a python script to compile the site. I reasoned (correctly) that I'm going to want my own very simple templating engine, with really good markdown support, and I'm going to have fun making it. I also reasoned (incorrectly) that it would make sense to hold the content on one branch, and the compiled site on another branch.
