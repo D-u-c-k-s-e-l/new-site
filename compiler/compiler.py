@@ -95,7 +95,7 @@ def main(test_mode: bool, dryrun: bool=False) -> None:
                 'md'   if filename.endswith('.md'  ) else (
                 'html' if filename.endswith('.html') else (
                 'html' if filename.endswith('.htm' ) else (
-                'raw' if filename.split('.')[-1] in ['.txt', '.htaccess', '.json']
+                'raw' if filename.split('.')[-1] in ['txt', 'htaccess', 'json']
                 else ( None
             )))))
             if compile_type is None:
