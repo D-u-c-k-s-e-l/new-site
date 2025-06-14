@@ -79,13 +79,6 @@ SOCIAL_LINKS = {
         'icon': '\uf0e0', # nf-fa-envelope
         'display': '{username}@{mailbox}'
     },
-    # Mastodon is an example:
-    # 'mastodon': {
-    #     'url': 'https://mastadon.social/@{username}@{mailbox}',
-    # cspell: ignore uedc (this is stupid)
-    #     'icon': '\uedc0', # nf-fa-mastodon
-    #     'display': '@{username}@{mailbox}'
-    # },
     'tumblr': {
         'url': 'https://tumblr.com/{username}',
         'icon': '\uf173', # nf-fa-tumblr
@@ -95,6 +88,11 @@ SOCIAL_LINKS = {
         'url': 'https://youtube.com/@{username}',
         'icon': '\uf16a', # nf-fa-youtube
         'display': '{username}'
+    },
+    'matrix': {
+        'url': 'https://matrix.to/#/@{username}:{mailbox}',
+        'icon': '\uf27a', # nf-fa-message
+        'display': '@{username}:{mailbox}'
     },
 }
 
