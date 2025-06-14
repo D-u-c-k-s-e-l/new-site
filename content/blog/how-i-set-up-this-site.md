@@ -5,8 +5,8 @@ published: 2025-05-24
 
 # How I Set Up This Site
 
-Blog article  
-2025-05-24
+Type: Blog article  
+Pub: 2025-05-24
 
 ## Info
 

@@ -4,8 +4,8 @@ title: The Tumblr Proposition
 
 # The Tumblr Proposition
 
-Proposition  
-Pre-site
+Type: Proposition  
+Pub: 2025-06-14 (but ideated long before then)
 
 ## What is Tumblr?
 
