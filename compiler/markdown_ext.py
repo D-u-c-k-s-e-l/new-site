@@ -206,7 +206,7 @@ class SocialLinkPattern(Pattern):
         # text
         text = SOCIAL_LINKS[platform]['display']
         text = text.format(username=username, mailbox=mailbox)
-        icon = SOCIAL_LINKS[platform]['icon']
+        icon = SOCIAL_LINKS[platform]['icon']+' '
         el.text = icon + text
         # Open in new tab
         el.set('target', '_blank')
