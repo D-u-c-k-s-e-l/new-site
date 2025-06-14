@@ -52,7 +52,7 @@ body {
 
 a {
     color: var(--c4);
-    text-decoration:dotted var(--b4) underline;
+    text-decoration:wavy var(--b4) underline;
 }
 a:hover {
     font-style: italic;
@@ -134,15 +134,12 @@ navbar {
     height: max-content;
     padding-top: 1em;
     padding-bottom: 1em;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: flex-start;
-    align-items: center;
+    display: block;
 }
 
-navbar>* {
-    padding-right: 2ch;
-    padding-left: 1ch;
+navbar>*::before,
+navbar>*::after {
+    content: "\00a0";
 }
 
 footer {
