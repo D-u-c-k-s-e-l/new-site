@@ -53,6 +53,33 @@
     <footer>
         <p>Copyright 2025 by Ducksel. All Rights Reserved.</p>
         <p>Icons via <a href="https://www.nerdfonts.com/">Nerd Fonts</a>.</p>
+        <p>
+            The music is
+            <span class="c2">System Info 2011 kg</span>
+            by <span class="c2">ArCADE</span>. <br/>
+            <audio id="background_music" controls loop autoplay>
+                <source src="https://mqum53agfs.ufs.sh/f/Sg5gPZ5Az9ym8UMGvMfJ4IixbpAyd3VfoNevDHXZtQcLGF9s" type="audio/mpeg">
+                Your browser does not support the audio element.
+            </audio><br/>
+            <a href="https://keygenmusic.tk/#track=ArCADE/ArCADE%20-%20Gtopala%20System%20Info%202011%20kg.xm">
+                └&gt; Here's where I found it!
+            </a>
+        </p>
+        <script>
+            window.addEventListener('DOMContentLoaded', function() {
+            const audio = document.getElementById('background_music');
+
+            const startAudio = () => {
+                if (!audio.paused) return;
+                audio.play();
+                window.removeEventListener('click', startAudio);
+                window.removeEventListener('keydown', startAudio);
+            };
+
+            window.addEventListener('click', startAudio, { once: true });
+            window.addEventListener('keydown', startAudio, { once: true });
+            });
+        </script>
     </footer>
 </body>
 
