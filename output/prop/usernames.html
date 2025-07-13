@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="/s/st/pygments.css">
     <link rel="stylesheet" href="/s/st/main.css">
     <link rel="icon" href="/s/img/duck.png" type="image/png">
-    <title>Non-Blogging posts | ducksel.xyz</title>
+    <title>The Username Proposition | ducksel.xyz</title>
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>
         window.MathJax = {
@@ -45,15 +45,34 @@
     <p class="c0">~--</p>
 
     <div class="content">
-        <h1>Non-Blogging Things</h1>
-<p>These are things I'm not blogging about but still want to put on my website.</p>
-<p>Right now I only have one category.</p>
-<h2>Propositions</h2>
-<p>Things I think should happen or might someday do. Feel free to use these ideas in any way.</p>
+        <h1>The Username Proposition</h1>
+<p>Type: Proposition<br />
+Pub: 2025-07-13 (but ideated before then)</p>
+<h2>What's in a name?</h2>
+<p>Currently, there are a LOT of ways to represent usernames. Let's see just a few:</p>
 <ul>
-<li><a href="/prop/tumblr">Tumblr</a> (pre-site)</li>
-<li><a href="/prop/usernames">Usernames</a> (2025-07-13)</li>
+<li><code>@ username : instance</code> (matrix)</li>
+<li><code>@ username @ place</code> (fedi)</li>
+<li><code>@ username</code> (most sites)</li>
+<li><code>r/username</code> (reddit)</li>
+<li><code>username @ provider</code> (email)</li>
 </ul>
+<h2>Cleaning things up</h2>
+<p>Because there are so many ways, I thought I'd clean things up a bit.</p>
+<h2>The system</h2>
+<p>To represent usernames, I propose we use <code>{platform} @ {username} {@ location}</code>.</p>
+<p>For example, john doe might have a matrix account <code>matrix @ johndoe @ example.com</code> or an email <code>email @ johndoe @ example.com</code>. These are equivalent to <code>@johndoe:example.com</code> and <code>johndoe @ example.com</code>.</p>
+<ol>
+<li>For platforms that don't require a URL, the <code>@ location</code> is removed, for example <code>twitter @ johndoe</code>.</li>
+<li>When referencing someone on the same server (for fedi, etc.), the <code>@ location</code> may be removed as well.</li>
+<li>The <code>platform</code> may be omitted when referencing a user on the same platform. This means if you're on twitter and contacting John Doe (and also following rule 1), you just do <code>@johndoe</code>.</li>
+</ol>
+<h2>Implementations</h2>
+<p>The only current implementation of this system (as I'm aware) is on <a href="https://ducksel.xyz">my website</a>. This is why I have added the extra spaces and code sections in explaining this. A real email for john doe would be <a class="social-link email-link" href="mailto:johndoe@example.com" rel="noopener noreferrer" target="_blank" title="johndoe@example.com via email"> johndoe@example.com</a></p>
+<p>Most platforms don't require adding their name before a username, so rule 3 is satisfied already.</p>
+<p>Some platforms like <a href="https://wafrn.net">wafrn</a> follow rule 2.</p>
+<hr />
+<p>I'm just putting this idea out there for fun. Do whatever you want with it forever for free :)</p>
     </div>
 
     <p class="c0">--~</p>
