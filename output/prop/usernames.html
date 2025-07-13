@@ -60,15 +60,15 @@ Pub: 2025-07-13 (but ideated before then)</p>
 <h2>Cleaning things up</h2>
 <p>Because there are so many ways, I thought I'd clean things up a bit.</p>
 <h2>The system</h2>
-<p>To represent usernames, I propose we use <code>{platform} @ {username} {@ location}</code>.</p>
-<p>For example, john doe might have a matrix account <code>matrix @ johndoe @ example.com</code> or an email <code>email @ johndoe @ example.com</code>. These are equivalent to <code>@johndoe:example.com</code> and <code>johndoe @ example.com</code>.</p>
+<p>To represent usernames, I propose we use <span class="highlight">{platform} @ {username} {@ location}</span>.</p>
+<p>For example, john doe might have a matrix account <span class="highlight">matrix @ johndoe @ example.com</span> or an email <span class="highlight">email @ johndoe @ example.com</span>. These are equivalent to <span class="highlight">@johndoe:example.com</span> and <span class="highlight">johndoe @ example.com</span>.</p>
 <ol>
-<li>For platforms that don't require a URL, the <code>@ location</code> is removed, for example <code>twitter @ johndoe</code>.</li>
-<li>When referencing someone on the same server (for fedi, etc.), the <code>@ location</code> may be removed as well.</li>
-<li>The <code>platform</code> may be omitted when referencing a user on the same platform. This means if you're on twitter and contacting John Doe (and also following rule 1), you just do <code>@johndoe</code>.</li>
+<li>For platforms that don't require a URL, the <span class="highlight">@ location</span> is removed, for example <span class="highlight">twitter @ johndoe</span>.</li>
+<li>When referencing someone on the same server (for fedi, etc.), the <span class="highlight">@ location</span> may be removed as well.</li>
+<li>The <span class="highlight">platform</span> may be omitted when referencing a user on the same platform. This means if you're on twitter and contacting John Doe (and also following rule 1), you just do <span class="highlight">@johndoe</span>.</li>
 </ol>
 <h2>Implementations</h2>
-<p>The only current implementation of this system (as I'm aware) is on <a href="https://ducksel.xyz">my website</a>. This is why I have added the extra spaces and code sections in explaining this. A real email for john doe would be <a class="social-link email-link" href="mailto:johndoe@example.com" rel="noopener noreferrer" target="_blank" title="johndoe@example.com via email"> johndoe@example.com</a></p>
+<p>The only current implementation of this system (as I'm aware) is on <a href="https://ducksel.xyz">my website</a>. This is why I have added the extra spaces and highlights in explaining this. A real email for john doe would be <a class="social-link email-link" href="mailto:johndoe@example.com" rel="noopener noreferrer" target="_blank" title="johndoe@example.com via email"> johndoe@example.com</a></p>
 <p>Most platforms don't require adding their name before a username, so rule 3 is satisfied already.</p>
 <p>Some platforms like <a href="https://wafrn.net">wafrn</a> follow rule 2.</p>
 <hr />
