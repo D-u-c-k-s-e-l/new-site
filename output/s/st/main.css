@@ -199,3 +199,27 @@ mjx-container>*>*{
 .highlight {
     background-color: var(--b3);
 }
+
+/* Tables */
+table {
+    border: 2px solid var(--c0);
+    border-collapse: collapse;
+    /* width: 100%; */
+}
+
+th, td {
+    border-right: 1px solid var(--c0);
+    text-align: left;
+}
+
+th:last-child, td:last-child {
+    border-right: none;
+}
+
+thead {
+    border-bottom: 1px solid var(--c0);
+}
+
+th:empty {
+    padding: 0;
+}

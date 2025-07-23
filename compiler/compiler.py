@@ -224,8 +224,8 @@ def parse_doc_contents(markdown_text: str) -> str:
     str: The resulting HTML after processing the markdown text.
     """
     # Process the markdown
-    # Use fenced code, codehilite, and all custom extensions
-    exts = ['fenced_code', 'codehilite']
+    # Use fenced code, codehilite, tables, and all custom extensions
+    exts = ['fenced_code', 'codehilite', 'tables']
     exts.extend(custom_extensions)
     result = markdown.markdown(
          markdown_text,

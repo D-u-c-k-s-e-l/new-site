@@ -169,10 +169,11 @@ class SocialLinkExtension(Extension):
     Markdown extension where platform@username becomes a link saying platform@username
     """
     SOCIAL_REGEX = (
+        r'(?P<noconvert>!?[=$]?)'
         r'(?P<platform>[a-zA-Z0-9]+)'+
         r'@(?P<username>[a-zA-Z0-9_.\-+]+)'+
         r'(@(?P<mailbox>[a-zA-Z0-9\-._~:/?#\[\]@!$&\'()*+,;=%]+))?'+
-        r'(?=[,.!? ]|$)'
+        r'(?=[,.!? :]|$)'
         )
     def extendMarkdown(self, md):
         """
@@ -187,6 +188,13 @@ class SocialLinkPattern(Pattern):
         platform = m.group('platform')
         username = m.group('username')
         mailbox = m.group('mailbox')
+        noconvert = m.group('noconvert')
+
+        if len(noconvert) > 0 and noconvert[0] == '!':
+            nc = '' if len(noconvert) == 1 else noconvert[1:]
+            return f"{nc}{platform}@{username}" + (
+                (f"@{mailbox}" if mailbox != None else ""))
+
         while True:
             # Unalias platform.
             if platform not in SOCIAL_LINKS:
@@ -213,6 +221,11 @@ class SocialLinkPattern(Pattern):
         el.set('rel', 'noopener noreferrer')
         # hover text
         el.set('title', f"{text} via {platform}")
+        if len(noconvert) > 0:
+            if noconvert[-1] == '$':
+                return text
+            elif noconvert[-1] == '=':
+                return url
         return el
 
 extensions = [

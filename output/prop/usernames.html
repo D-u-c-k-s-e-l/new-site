@@ -47,31 +47,70 @@
     <div class="content">
         <h1>The Username Proposition</h1>
 <p>Type: Proposition<br />
-Pub: 2025-07-13 (but ideated before then)</p>
+Pub: 2025-07-13 (but ideated before then)
+Updated: 2025-07-22</p>
 <h2>What's in a name?</h2>
 <p>Currently, there are a LOT of ways to represent usernames. Let's see just a few:</p>
-<ul>
-<li><code>@ username : instance</code> (matrix)</li>
-<li><code>@ username @ place</code> (fedi)</li>
-<li><code>@ username</code> (most sites)</li>
-<li><code>r/username</code> (reddit)</li>
-<li><code>username @ provider</code> (email)</li>
-</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;"></th>
+<th style="text-align: left;"></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">most sites</td>
+<td style="text-align: left;"><code>@username</code></td>
+</tr>
+<tr>
+<td style="text-align: left;">reddit</td>
+<td style="text-align: left;"><code>r/username</code></td>
+</tr>
+<tr>
+<td style="text-align: left;">fediverse</td>
+<td style="text-align: left;"><code>@username@place</code></td>
+</tr>
+<tr>
+<td style="text-align: left;">matrix</td>
+<td style="text-align: left;"><code>@username:instance</code></td>
+</tr>
+<tr>
+<td style="text-align: left;">email</td>
+<td style="text-align: left;"><code>username@provider</code></td>
+</tr>
+</tbody>
+</table>
 <h2>Cleaning things up</h2>
 <p>Because there are so many ways, I thought I'd clean things up a bit.</p>
 <h2>The system</h2>
-<p>To represent usernames, I propose we use <span class="highlight">{platform} @ {username} {@ location}</span>.</p>
-<p>For example, john doe might have a matrix account <span class="highlight">matrix @ johndoe @ example.com</span> or an email <span class="highlight">email @ johndoe @ example.com</span>. These are equivalent to <span class="highlight">@johndoe:example.com</span> and <span class="highlight">johndoe @ example.com</span>.</p>
+<p>To represent usernames, I propose we use <span class="highlight">{platform}@{username}{@domain}</span>.</p>
+<p>For example, john doe might have a matrix account <span class="highlight">matrix@johndoe@example.com</span> or an email <span class="highlight">email@johndoe@example.com</span>. These are equivalent to <span class="highlight">@johndoe:example.com</span> and <span class="highlight">johndoe@example.com</span>.</p>
 <ol>
-<li>For platforms that don't require a URL, the <span class="highlight">@ location</span> is removed, for example <span class="highlight">twitter @ johndoe</span>.</li>
-<li>When referencing someone on the same server (for fedi, etc.), the <span class="highlight">@ location</span> may be removed as well.</li>
+<li>For platforms that don't require a URL, the <span class="highlight">@domain</span> is removed, for example <span class="highlight">twitter@johndoe</span>.</li>
+<li>When referencing someone on the same server (for fedi, etc.), the <span class="highlight">@domain</span> may be removed as well.</li>
 <li>The <span class="highlight">platform</span> may be omitted when referencing a user on the same platform. This means if you're on twitter and contacting John Doe (and also following rule 1), you just do <span class="highlight">@johndoe</span>.</li>
 </ol>
+<h2>Additional rules</h2>
+<p>There are some characters you may add before a username to change how it displays. If you add these and the user would usually be pinged (sent a notification), they won't be.</p>
+<ul>
+<li>The <code>!</code> character escapes a username sequence, allowing you to show the raw text.
+  this can be applied before any other one of these characters. For example, <span class="highlight">!email@johndoe@example.com</span> will show <span class="highlight">email@johndoe@example.com</span>.<br />
+  This has been used repeatedly throughout this document to show examples without embedding links.</li>
+<li>The <code>~</code> character just disables pinging the user so you can be respectful of their attention.</li>
+<li>An <code>=</code> before a username will show the url only, and not the username. (i.e. <span class="highlight">=reddit@user</span> will show <span class="highlight">https://www.reddit.com/u/user</span>)</li>
+<li>A <code>$</code> before a username will show the formatted username. (i.e. <span class="highlight">$reddit@user</span> will show <span class="highlight">u/user</span>)</li>
+</ul>
 <h2>Implementations</h2>
-<p>The only current implementation of this system (as I'm aware) is on <a href="https://ducksel.xyz">my website</a>. This is why I have added the extra spaces and highlights in explaining this. A real email for john doe would be <a class="social-link email-link" href="mailto:johndoe@example.com" rel="noopener noreferrer" target="_blank" title="johndoe@example.com via email"> johndoe@example.com</a></p>
+<p>The main implementation of this proposition is on <a href="https://ducksel.xyz">my website</a> which you are currently visiting. You can see this if I write <span class="highlight">tumblr@helloiamduck</span>: <a class="social-link tumblr-link" href="https://tumblr.com/helloiamduck." rel="noopener noreferrer" target="_blank" title="@helloiamduck. via tumblr"> @helloiamduck.</a></p>
+<p>I also am working on an implementation of this for Jekyll, but I haven't published it yet.</p>
+<p>Please <a href="/contact/">contact me</a> if you would like help implementing this, have questions, or have already implemented it.</p>
+<h2>Notes</h2>
 <p>Most platforms don't require adding their name before a username, so rule 3 is satisfied already.</p>
 <p>Some platforms like <a href="https://wafrn.net">wafrn</a> follow rule 2.</p>
+<p><br/><br/></p>
 <hr />
+<p>Freedom of usage:</p>
 <p>I'm just putting this idea out there for fun. Do whatever you want with it forever for free :)</p>
     </div>
 
